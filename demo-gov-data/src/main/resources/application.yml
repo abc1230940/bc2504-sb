@@ -1,0 +1,12 @@
+service-url:
+  weathers: "https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=en"
+
+spring.datasource:
+  driverClassName: "org.postgresql.Driver"
+  url: "jdbc:postgresql://localhost:5432/bootcamp_2504"
+  username: "postgres"
+  password: "admin1234"
+
+spring.jpa:
+  show-sql: true
+  hibernate.ddl-auto: update

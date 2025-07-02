@@ -1,0 +1,11 @@
+server:
+  port: 8081
+
+service:
+  api:
+    mtr:
+      host: "localhost:8080"
+      schedule:
+        version: ""
+        endpoint: "/line/{lineCode}/station/{stationCode}"
+  

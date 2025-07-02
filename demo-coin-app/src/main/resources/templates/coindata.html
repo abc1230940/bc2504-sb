@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Coingecko - Coin Data</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="../js/cointable.js"></script>
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #f1f3f4;
+            --text-color: #333;
+            --background-color: #ffffff;
+            --card-background: #f9fafb;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #4a90e2;
+            --secondary-color: #2d3748;
+            --text-color: #e2e8f0;
+            --background-color: #1a202c;
+            --card-background: #2d3748;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: var(--transition);
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .form-group label {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .form-group input {
+            flex: 1;
+            padding: 12px;
+            font-size: 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            background-color: var(--card-background);
+            color: var(--text-color);
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
+        }
+
+        .form-group button {
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 500;
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .form-group button:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+        }
+
+        .form-group button:active {
+            transform: translateY(0);
+        }
+
+        table {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            border-collapse: separate;
+            border-spacing: 0;
+            background-color: var(--card-background);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        th, td {
+            padding: 16px;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        th {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        td {
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: rgba(26, 115, 232, 0.1);
+            transition: var(--transition);
+        }
+
+        img {
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background-color: #1557b0;
+        }
+
+        .price-change {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .price-change.up {
+            color: #2ecc71; /* Green for up */
+        }
+
+        .price-change.up::before {
+            content: "▲";
+        }
+
+        .price-change.down {
+            color: #e74c3c; /* Red for down */
+        }
+
+        .price-change.down::before {
+            content: "▼";
+        }
+
+        .price-change.neutral {
+            color: #7f8c8d; /* Gray for neutral */
+        }
+
+        .price-change.neutral::before {
+            content: "-";
+        }
+
+        .price-change span {
+            margin-left: 4px; /* Space between arrow and percentage */
+        }
+
+        @media (max-width: 600px) {
+            .form-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .form-group button {
+                margin-top: 10px;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 12px;
+            }
+
+            .sendPriceBtn {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+                background-color: var(--primary-color);
+                color: #ffffff;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: var(--transition);
+            }
+
+            .sendPriceBtn:hover {
+                background-color: #1557b0;
+                transform: translateY(-2px);
+            }
+
+            .sendPriceBtn:active {
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Coin Data from External API</h1>
+    <div class="form-group">
+        <label for="coinFilter">Filter by ID:</label>
+        <input type="text" class="form-control" id="coinFilter" placeholder="Enter Coin Id">
+        <button id="submitBtn">Submit</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Image</th>
+                <th>Current Price (USD)</th>
+                <th>Price Change (24h)</th>
+                <th>Market Capitalization</th>
+                <th>Last Updated</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="coin : ${coinList}" class="coinRow" th:attr="data-coin-id=${coin.id}">
+                <td th:text="${coin.id}">Sample Id</td>
+                <td><img th:src="${coin.image}" alt="Coin Image" height="50"></td>
+                <td th:text="'$' + ${#numbers.formatDecimal(coin.currentPrice, 1, 'COMMA', 2, 'POINT')}"></td>
+                <td>
+                    <span class="price-change" th:class="${'price-change ' + (coin.priceChangePercent24h > 0 ? 'up' : (coin.priceChangePercent24h < 0 ? 'down' : 'neutral'))}">
+                        <span th:text="${#numbers.formatDecimal(coin.priceChangePercent24h < 0 ? -coin.priceChangePercent24h : coin.priceChangePercent24h, 1, 'COMMA', 2, 'POINT')} + '%'"></span>
+                    </span>
+                </td>
+                <td th:text="'$' + ${#numbers.formatDecimal(coin.marketCap, 1, 'COMMA', 0, 'POINT')}"></td>
+                <td class="last-updated" th:text="${#temporals.format(coin.lastUpdated, 'yyyy-MM-dd HH:mm:ss')} + ' HKT'"></td>
+            </tr>
+        </tbody>
+    </table>
+    <button class="theme-toggle">🌙</button>
+    <script th:inline="javascript">
+        let coinList = /*[[${coinList}]]*/ [];
+
+        document.getElementById('submitBtn').addEventListener('click', function () {
+            if (!Array.isArray(coinList) || coinList.length === 0) {
+                console.error('Invalid coinList:', coinList);
+                alert('No coins to submit');
+                return;
+            }
+            for (const coin of coinList) {
+                if (!coin.coinId || !coin.coinId.match(/^[a-zA-Z0-9_-]+$/)) {
+                    console.error('Invalid coinId:', coin.coinId);
+                    alert('Invalid coin ID: ' + coin.coinId);
+                    return;
+                }
+                if (isNaN(coin.currentPrice)) {
+                    console.error('Invalid price:', coin.currentPrice);
+                    alert('Invalid price for coin: ' + coin.coinId);
+                    return;
+                }
+            }
+            fetch('/coinpage/coins', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(coinList)
+            })
+                .then(response => {
+                    console.log('Sending coinList:', coinList);
+                    console.log('Response Status:', response.status);
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(`HTTP ${response.status}: ${text}`); });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    alert('Submitted successfully: ' + data.message);
+                })
+                .catch(error => {
+                    console.error('Error submitting:', error);
+                    alert('Failed to submit coins: ' + error.message);
+                });
+        });
+
+        const themeToggle = document.querySelector('.theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            if (document.documentElement.getAttribute('data-theme') === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+services:
+  coin-app:
+    image: demo-coingecko:0.0.1
+    container_name: coin-app
+    networks:
+      - bootcamp-network
+    ports:
+      - "8090:8085"
+
+  crypto-app:
+    image: demo-crypto:0.0.1
+    container_name: crypto-app
+    networks:
+      - bootcamp-network
+    ports:
+      - "8091:8086"
+
+  postgres:
+    image: postgres:15
+    container_name: postgres-container
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin1234
+      POSTGRES_DB: bootcamp_2504
+      PGDATA: /var/lib/postgresql/data/pgdata15
+    networks:
+      - bootcamp-network
+    ports:
+      - "5532:5432"
+    volumes:
+      - "./pgdata:/var/lib/postgresql/data/pgdata"
+
+  redis:
+    image: redis:7
+    container_name: redis-container
+    networks:
+      - bootcamp-network
+    ports:
+      - "6479:6379"
+    volumes:
+      - "./redis_data:/data"
+
+volumes:
+  redis_data:
+
+networks:
+  bootcamp-network:
+    driver: bridge

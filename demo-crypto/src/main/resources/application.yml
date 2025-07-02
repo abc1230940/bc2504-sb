@@ -1,0 +1,11 @@
+server:
+  port: 8086
+
+service:
+  coingecko:
+    host: "coin-app"
+    port: "8085"
+    api:
+      coindata:
+        version: ""
+        endpoint: "/coindata" 

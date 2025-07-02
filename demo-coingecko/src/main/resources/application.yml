@@ -1,0 +1,34 @@
+server:
+   port: 8085
+
+# Docker: postgres-container and redis-container
+spring.datasource:
+  driverClassName: "org.postgresql.Driver"
+  url: "jdbc:postgresql://postgres-container:5432/bootcamp_2504"
+  # url: "jdbc:postgresql://localhost:5432/bootcamp_2504"
+  username: "postgres"
+  password: "admin1234"
+
+spring.jpa:
+  show-sql: true
+  hibernate.ddl-auto: update
+
+service:
+  coingecko:
+    host: 
+      demo: "api.coingecko.com"
+      pro: "pro-api.coingecko.com"
+    api:
+      apikey-name: "x-cg-demo-api-key"
+      apikey-value: "CG-PBRKKLmLoSaTmwhL67UuAEEY"
+      markets: 
+        version: "api/v3"
+        endpoint: "/coins/markets"
+
+spring:
+  data:
+    redis:
+      # host: localhost
+      host: redis-container
+      port: 6379
+

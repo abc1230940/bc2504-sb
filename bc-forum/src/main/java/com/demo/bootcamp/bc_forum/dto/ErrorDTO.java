@@ -9,7 +9,7 @@ import lombok.Getter;
 @Builder
 
 public class ErrorDTO {
-  private Integer code;
+  private Long code;
   private String message;
 }
 

@@ -1,0 +1,19 @@
+spring.datasource:
+  driverClassName: "org.postgresql.Driver"
+  url: "jdbc:postgresql://localhost:5432/bootcamp_2504"
+  username: "postgres"
+  password: "admin1234"
+
+spring.jpa:
+  show-sql: true
+  hibernate.ddl-auto: update
+
+service-url:
+  mtr:
+    host: "rt.data.gov.hk"
+    api:
+      mtr-schedule:
+        version: "v1"
+        endpoint: "/transport/mtr/getSchedule.php"
+  
+  

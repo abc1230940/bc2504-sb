@@ -17,6 +17,7 @@ import lombok.ToString;
 
 public class Customer {
   private String name;
+  private Long id;
   private List<Order> orders;
   
 }
