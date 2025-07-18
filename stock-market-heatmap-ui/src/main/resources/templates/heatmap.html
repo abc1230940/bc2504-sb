@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Stock Market Heatmap</title>
+  <link rel="stylesheet" th:href="@{/style.css}">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" src="https://d3js.org/d3.v7.min.js"></script>
+  <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.stock.min.js"></script>
+</head>
+
+<body>
+  <div id="heatmap-container">
+    <div id="treemap" style="width: 100vw; height: 100vh;"></div>
+    <div id="tooltip" class="tooltip" style="display: none;"></div>
+  </div>
+  <div id="candlestick-container" style="display: none;">
+    <div id="candlestick" style="width: 100vw; height: 100vh;"></div>
+    <button id="back-to-treemap">Back to Treemap</button>
+  </div>
+  <script type="text/javascript" th:src="@{/script.js}"></script>
+
+  <script type="text/javascript">
+    /* <![CDATA[ */
+    console.log('Inline script running');
+    const initialHeatmapData = /*[[${heatmap}]]*/[];
+    const stockNames = {
+      'AAPL': 'Apple Inc.', 'MSFT': 'Microsoft Corporation', 'GOOGL': 'Alphabet Inc.',
+      'AMZN': 'Amazon.com Inc.', 'TSLA': 'Tesla Inc.', 'NVDA': 'NVIDIA Corporation',
+      'JPM': 'JPMorgan Chase & Co.', 'V': 'Visa Inc.', 'WMT': 'Walmart Inc.',
+      'JNJ': 'Johnson & Johnson', 'PG': 'Procter & Gamble Co.', 'DIS': 'The Walt Disney Company',
+      'NFLX': 'Netflix Inc.', 'XOM': 'Exxon Mobil Corporation', 'BAC': 'Bank of America Corporation'
+    };
+    const stockIcons = {
+      'AAPL': '/img/AAPL.png', 'MSFT': '/img/MSFT.png', 'GOOGL': '/img/GOOGL.png',
+      'AMZN': '/img/AMZN.png', 'TSLA': '/img/TSLA.png', 'NVDA': '/img/NVDA.png',
+      'JPM': '/img/JPM.png', 'V': '/img/V.png', 'WMT': '/img/WMT.png',
+      'JNJ': '/img/JNJ.png', 'PG': '/img/PG.png', 'DIS': '/img/DIS.png',
+      'NFLX': '/img/NFLX.png', 'XOM': '/img/XOM.png', 'BAC': '/img/BAC.png'
+    };
+    console.log('Initial Heatmap Data:', initialHeatmapData);
+    /* ]]> */
+  </script>
+</body>
+
+</html>
