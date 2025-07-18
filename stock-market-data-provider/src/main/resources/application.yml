@@ -1,0 +1,9 @@
+service:
+  finnhub:
+    host: "finnhub.io"
+    api:
+      apikey-name: "token"
+      apikey-value: "d1n3oghr01qlvnp5cod0d1n3oghr01qlvnp5codg"
+      quote:
+        version: "api/v1"
+        endpoint: "/quote"
