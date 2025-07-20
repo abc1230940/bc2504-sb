@@ -1,9 +1,0 @@
-server:
-  port: 8100
-
-service:
-  finnhub:
-    host: "localhost:8081"
-    quote:
-      version: ""
-      endpoint: "/stockdata"
